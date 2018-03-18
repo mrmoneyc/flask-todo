@@ -2,9 +2,24 @@
 import json
 from flask import Flask
 from flask_restplus import Api, Resource
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import expression
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 api = Api(app)
+db = SQLAlchemy(app)
+
+
+class Todo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    is_done = db.Column(db.Boolean, server_default=expression.false(), default=False)
+
+    def __repr__(self):
+        return '<Todo %r>' % self.content
 
 
 @api.route('/hello')
