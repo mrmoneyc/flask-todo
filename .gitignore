@@ -1,0 +1,14 @@
+**/*.sync
+**/*.DS_Store
+**/*.env
+**/*.remote-sync.json
+**/*.pyc
+**/tags
+**/TAGS
+.zcache/
+.padawan/
+.phpcomplete_extended/
+.vscode/
+node_modules/
+vendor/
+__pycache__/
