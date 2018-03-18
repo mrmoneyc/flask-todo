@@ -40,10 +40,17 @@ class HelloResource(Resource):
 @api.route('/todo/<int:todo_id>')
 class TodoResource(Resource):
     def get(self, todo_id=None):
+        todo_list = []
+
         if not todo_id:
-            return 'Get all todos'
+            todo_list = Todo.query.all()
         else:
-            return 'Get todo by id: %d' % todo_id
+            todo_list = Todo.query.filter_by(id=todo_id).first()
+
+        resp_body = {
+                'result': todo_list
+        }
+        return resp_body
 
     def post(self):
         return 'Create todo'
