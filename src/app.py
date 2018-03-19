@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-import json
-from flask import Flask
+from flask import Flask, request
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression
@@ -53,7 +52,14 @@ class TodoResource(Resource):
         return resp_body
 
     def post(self):
-        return 'Create todo'
+        req_body = request.get_json()
+        content = req_body['content']
+        is_done = req_body['is_done']
+
+        todo = Todo(content=content, is_done=is_done)
+        db.session.add(todo)
+        db.session.commit()
+        return todo.id
 
     def put(self, todo_id=None):
         if not todo_id:
