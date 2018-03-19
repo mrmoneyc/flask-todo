@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 class TodoSchema(Schema):
     id = fields.Int(dump_only=True)
     content = fields.Str()
-    is_done = fields.Bool(missing=False, default=False)
+    is_done = fields.Bool(missing=False)
 
 
 todo_schema = TodoSchema()
