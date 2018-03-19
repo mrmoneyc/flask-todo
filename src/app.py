@@ -108,12 +108,17 @@ class TodoResource(Resource):
         db.session.commit()
         return todo.id
 
-
     def delete(self, todo_id=None):
         if not todo_id:
             return 'Todo ID is required'
-        else:
-            return 'Delete todo by id: %d' % todo_id
+
+        todo = Todo.query.filter_by(id=todo_id).first()
+        if not todo:
+            return {'message': 'Todo not found'}, 404
+
+        db.session.delete(todo)
+        db.session.commit()
+        return todo.id
 
 
 if __name__ == '__main__':
