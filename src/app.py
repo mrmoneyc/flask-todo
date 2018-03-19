@@ -3,6 +3,7 @@ from flask import Flask, request
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression
+from marshmallow import Schema, fields
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo'
@@ -12,6 +13,18 @@ api = Api(app)
 db = SQLAlchemy(app)
 
 
+# == Data Schemas ==
+class TodoSchema(Schema):
+    id = fields.Int(dump_only=True)
+    content = fields.Str()
+    is_done = fields.Bool()
+
+
+todo_schema = TodoSchema()
+todos_schema = TodoSchema(many=True)
+
+
+# == DB Models ==
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text)
@@ -21,6 +34,7 @@ class Todo(db.Model):
         return '<Todo %r>' % self.content
 
 
+# == API Handlers ==
 @api.route('/hello')
 @api.route('/hello/<string:username>')
 class HelloResource(Resource):
@@ -39,12 +53,12 @@ class HelloResource(Resource):
 @api.route('/todo/<int:todo_id>')
 class TodoResource(Resource):
     def get(self, todo_id=None):
-        todo_list = []
+        todo_list = None
 
         if not todo_id:
-            todo_list = Todo.query.all()
+            todo_list, _ = todos_schema.dump(Todo.query.all())
         else:
-            todo_list = Todo.query.filter_by(id=todo_id).first()
+            todo_list, _ = todo_schema.dump(Todo.query.filter_by(id=todo_id).first())
 
         resp_body = {
                 'result': todo_list
