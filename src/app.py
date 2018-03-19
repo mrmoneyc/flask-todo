@@ -85,9 +85,29 @@ class TodoResource(Resource):
 
     def put(self, todo_id=None):
         if not todo_id:
-            return 'Todo ID is required'
-        else:
-            return 'Update todo by id: %d' % todo_id
+            return {'message': 'Todo ID is required'}, 400
+
+        req_body = request.get_json()
+        if not req_body:
+            return {'message': 'No todo data provided'}, 400
+
+        try:
+            data, _ = todo_schema.load(req_body)
+        except ValidationError as err:
+            return err.messages, 422
+
+        content = data['content']
+        is_done = data['is_done']
+
+        todo = Todo.query.filter_by(id=todo_id).first()
+        if not todo:
+            return {'message': 'Todo not found'}, 404
+
+        setattr(todo, 'content', content)
+        setattr(todo, 'is_done', is_done)
+        db.session.commit()
+        return todo.id
+
 
     def delete(self, todo_id=None):
         if not todo_id:
