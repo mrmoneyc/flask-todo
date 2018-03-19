@@ -3,7 +3,7 @@ from flask import Flask, request
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import expression
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, ValidationError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo'
@@ -17,7 +17,7 @@ db = SQLAlchemy(app)
 class TodoSchema(Schema):
     id = fields.Int(dump_only=True)
     content = fields.Str()
-    is_done = fields.Bool()
+    is_done = fields.Bool(missing=False, default=False)
 
 
 todo_schema = TodoSchema()
@@ -67,13 +67,21 @@ class TodoResource(Resource):
 
     def post(self):
         req_body = request.get_json()
-        content = req_body['content']
-        is_done = req_body['is_done']
+        if not req_body:
+            return {'message': 'No todo data provided'}, 400
+
+        try:
+            data, _ = todo_schema.load(req_body)
+        except ValidationError as err:
+            return err.messages, 422
+
+        content = data['content']
+        is_done = data['is_done']
 
         todo = Todo(content=content, is_done=is_done)
         db.session.add(todo)
         db.session.commit()
-        return todo.id
+        return todo.id, 201
 
     def put(self, todo_id=None):
         if not todo_id:
