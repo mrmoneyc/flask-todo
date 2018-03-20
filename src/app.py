@@ -2,12 +2,14 @@
 from flask import Flask, request
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from sqlalchemy.sql import expression
 from marshmallow import Schema, fields, ValidationError
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+CORS(app)
 
 api = Api(app)
 db = SQLAlchemy(app)
