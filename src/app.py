@@ -33,7 +33,7 @@ class Todo(db.Model):
     is_done = db.Column(db.Boolean, server_default=expression.false(), default=False)
 
     def __repr__(self):
-        return '<Todo %r>' % self.content
+        return "<Todo {%r}>".format(self.content)
 
 
 # == API Handlers ==
