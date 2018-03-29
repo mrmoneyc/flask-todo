@@ -9,6 +9,7 @@
 .padawan/
 .phpcomplete_extended/
 .vscode/
+.vagrant/
 node_modules/
 vendor/
 __pycache__/
