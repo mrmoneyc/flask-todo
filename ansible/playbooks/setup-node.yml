@@ -43,6 +43,7 @@
         - python3-devel
         - python3-virtualenv
         - nodejs6
+        - npm6
       when: ansible_os_family == 'Suse'
     - name: Install Basic Development Tools
       zypper:
