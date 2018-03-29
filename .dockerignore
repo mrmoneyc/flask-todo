@@ -1,2 +1,9 @@
 Dockerfile
+Vagrantfile
+ansible.cfg
+.DS_Store
+.gitignore
+ansible/
 todo-frontend/
+.git/
+.vagrant/
