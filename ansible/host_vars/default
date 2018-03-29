@@ -1,0 +1,42 @@
+---
+#######
+# MariaDB
+#######
+mariadb_major_version: "10.3"
+
+mariadb_service_name: "mysql"
+mariadb_run_user: "mysql"
+mariadb_run_group: "mysql"
+mariadb_secure_installation: true
+mariadb_root_password: "passw0rd"
+
+mariadb_server_id: 1
+mariadb_is_master: true
+mariadb_is_prod: false
+
+mariadb_utilities_dir: /usr/local/bin
+mariadb_backup_dir: /var/backup/db/
+mariadb_install_from_upstream: true
+mariadb_mysql_python_from_pip: true
+
+mariadb_databases:
+  - { "name": "todo", "collation": "utf8mb4_unicode_ci", "encoding": "utf8mb4", "replicate": 1 }
+
+mariadb_db_users:
+  - { "name": "todo", "host": "%", "password": "todo", "priv": "todo.*:ALL" }
+
+mariadb_install_utils: false
+mariadb_enable_backup: false
+mariadb_enable_optimization: false
+
+mariadb_cron_db_backup:
+  minute: "0"
+  hour: "4"
+  day: "*"
+  weekday: "*"
+
+mariadb_cron_db_optimize:
+  minute: "0"
+  hour: "3"
+  day: "*"
+  weekday: "0"

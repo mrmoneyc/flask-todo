@@ -1,0 +1,21 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+# Get date
+TODAY=$(date +%F)
+
+# The folder store backup
+BACKUPDIR="{{ mariadb_backup_dir }}"
+
+# MariaDB login info
+USERNAME="root"
+PASSWD="{{ mariadb_root_password }}"
+
+cd $BACKUPDIR
+
+# Create backup
+{% for database in mariadb_databases %}
+/usr/bin/mysqldump --opt --single-transaction --default-character-set=utf8 -u $USERNAME --password="$PASSWD" {{ database.name }} | gzip -9 -c > {{ database.name }}_$TODAY.sql.gz
+echo "[{{ database.name }}] -> {{ database.name }}_$TODAY.sql.gz"
+
+{% endfor %}

@@ -1,0 +1,26 @@
+---
+- name: Create database
+  mysql_db:
+    name: '{{ item.name }}'
+    collation: '{{ item.collation | default("utf8_general_ci") }}'
+    encoding: '{{ item.encoding | default("utf8") }}'
+    state: present
+    login_user: root
+    login_password: '{{ mariadb_root_password }}'
+    login_unix_socket: '{{ mariadb_cfg_mysqld_socket }}'
+  with_items:
+    - "{{ mariadb_databases|default([]) }}"
+  when: mariadb_databases|length > 0
+
+- name: Create db user account
+  mysql_user:
+    name: '{{ item.name }}'
+    host: '{{ item.host | default("localhost") }}'
+    password: '{{ item.password | default("passw0rd") }}'
+    priv: '{{ item.priv | default("*.*:ALL") }}'
+    state: '{{ item.state | default("present") }}'
+    login_user: root
+    login_password: '{{ mariadb_root_password }}'
+    login_unix_socket: '{{ mariadb_cfg_mysqld_socket }}'
+  with_items: "{{ mariadb_db_users | default([]) }}"
+  when: mariadb_db_users|length > 0

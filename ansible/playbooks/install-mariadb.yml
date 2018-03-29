@@ -1,0 +1,7 @@
+---
+- name: Install MariaDB
+  hosts: '{{ host }}'
+  remote_user: '{{ sysop_user }}'
+  become: true
+  roles:
+    - mrmoneyc.mariadb

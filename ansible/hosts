@@ -1,0 +1,12 @@
+[common:children]
+local
+
+[local:children]
+local-ap
+local-rdb
+
+[local-ap]
+local-ap-1 ansible_ssh_host=127.0.0.1
+
+[local-rdb]
+local-rdb-1 ansible_ssh_host=127.0.0.1

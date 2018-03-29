@@ -1,0 +1,6 @@
+---
+mariadb_gpg_key:
+  "42.3": "http://download.opensuse.org/repositories/server:/database/openSUSE_Leap_42.3/repodata/repomd.xml.asc"
+
+mariadb_repository:
+  "42.3": "http://download.opensuse.org/repositories/server:/database/openSUSE_Leap_42.3/"

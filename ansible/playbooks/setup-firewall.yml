@@ -1,0 +1,30 @@
+---
+- name: Setup firewall
+  hosts: '{{ host }}'
+  remote_user: '{{ sysop_user }}'
+  become: true
+  tasks:
+    - name: Add firewall rules (Service)
+      command: >
+        yast firewall services add service={{ item }} zone=EXT
+      with_items:
+        - service:sshd
+        - service:mosh
+        - service:nrpe
+      when: ansible_os_family == 'Suse'
+    - name: Add firewall rules (TCP Port)
+      command: >
+        yast firewall services add tcpport={{ item }} zone=EXT
+      with_items:
+        - http
+        - https
+        - 5000
+      when: ansible_os_family == 'Suse'
+    - name: Enabling firewall in the boot process
+      command: >
+        yast firewall startup atboot
+      when: ansible_os_family == 'Suse'
+    - name: Enables firewall
+      command: >
+        yast firewall enable
+      when: ansible_os_family == 'Suse'

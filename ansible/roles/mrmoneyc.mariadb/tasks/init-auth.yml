@@ -1,0 +1,34 @@
+---
+- name: Check root is exists
+  command: >
+    mysql -u root -p{{ mariadb_root_password }} -e 'SELECT VERSION();'
+  register: mariadb_root_admin_check
+  changed_when: false
+  check_mode: no
+  ignore_errors: true
+
+- name: Update root account
+  command: >
+    mysqladmin -u root password '{{ mariadb_root_password }}'
+  become: yes
+  become_user: root
+  when: mariadb_root_admin_check|failed
+
+- name: Remove test database
+  mysql_db:
+    name: test
+    state: absent
+    login_user: root
+    login_password: '{{ mariadb_root_password }}'
+    login_unix_socket: '{{ mariadb_cfg_mysqld_socket }}'
+  when: mariadb_secure_installation
+
+- name: Disable anonymous user
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+    login_user: root
+    login_password: '{{ mariadb_root_password }}'
+    login_unix_socket: '{{ mariadb_cfg_mysqld_socket }}'
+  when: mariadb_secure_installation

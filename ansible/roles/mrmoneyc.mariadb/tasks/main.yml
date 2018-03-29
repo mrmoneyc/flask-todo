@@ -1,0 +1,23 @@
+---
+- name: Include installation on SUSE
+  include_tasks: install-zypp.yml
+  when: ansible_os_family == 'Suse'
+
+- name: Include configuration
+  include_tasks: configure.yml
+
+- name: Include initial authentication
+  include_tasks: init-auth.yml
+
+- name: Create Databases
+  include_tasks: create-db.yml
+
+- name: Include install utilities
+  include_tasks: install-utils.yml
+  when: mariadb_install_utils
+
+- name: Ensure MariaDB is running and enabled on boot.
+  service:
+    name: '{{ mariadb_service_name }}'
+    state: started
+    enabled: yes

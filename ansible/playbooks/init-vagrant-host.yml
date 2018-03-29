@@ -1,0 +1,4 @@
+---
+- import_playbook: setup-node.yml
+- import_playbook: install-mariadb.yml
+- import_playbook: setup-firewall.yml

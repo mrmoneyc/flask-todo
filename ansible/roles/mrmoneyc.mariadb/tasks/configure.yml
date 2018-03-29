@@ -1,0 +1,38 @@
+---
+- name: Create log folder if missing
+  file:
+    state: directory
+    recurse: yes
+    dest: '{{ mariadb_cfg_mysqld_log|dirname }}'
+    owner: '{{ mariadb_run_user }}'
+    group: '{{ mariadb_run_group }}'
+    mode: 0755
+
+- name: Ensure dbpath directory
+  file:
+    path: "{{ mariadb_cfg_mysqld_datadir }}"
+    state: directory
+    owner: "{{ mariadb_run_user }}"
+    group: "{{ mariadb_run_group }}"
+    mode: 0755
+    recurse: yes
+
+- name: Configure MariaDB
+  template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf.d/my.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Restart MariaDB
+  service:
+    name: '{{ mariadb_service_name }}'
+    state: restarted
+
+- name: Wait when MariaDB is started
+  wait_for:
+    host: '{{ mariadb_cfg_mysqld_bind_address }}'
+    port: '{{ mariadb_cfg_mysqld_port }}'
+    timeout: 120

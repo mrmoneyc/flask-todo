@@ -1,0 +1,16 @@
+#!/bin/bash
+# {{ ansible_managed }}
+
+DB_LOGIN='-u root --password={{ mariadb_root_password }}'
+
+{% for database in mariadb_databases %}
+TABLES=$(echo "USE {{ database.name }}; SHOW TABLES;" | mysql $DB_LOGIN |  grep -v Tables_in_)
+echo "Processing {{ database.name }}..."
+for table in $TABLES
+    do
+        echo -n " * Optimizing table: $table ... "
+        echo "USE {{ database.name }}; OPTIMIZE TABLE $table" | mysql $DB_LOGIN >/dev/null
+        echo "Done!"
+    done
+
+{% endfor %}

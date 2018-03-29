@@ -1,0 +1,65 @@
+---
+- name: Create utilities folder
+  file:
+    path: "{{ mariadb_utilities_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: mariadb_install_utils
+
+- name: Install MySQLTuner
+  get_url:
+    url: https://raw.githubusercontent.com/major/MySQLTuner-perl/master/mysqltuner.pl
+    dest: "{{ mariadb_utilities_dir }}/mysqltuner.pl"
+    owner: root
+    group: root
+    mode: 0740
+  when: mariadb_install_utils
+
+- name: Install optimization script
+  template:
+    src: db-optimize.sh.j2
+    dest: "{{ mariadb_utilities_dir }}/db-optimize.sh"
+    owner: root
+    group: root
+    mode: 0750
+  when: mariadb_install_utils
+
+- name: Install backup script
+  template:
+    src: db-backup.sh.j2
+    dest: "{{ mariadb_utilities_dir }}/db-backup.sh"
+    owner: root
+    group: root
+    mode: 0750
+  when: mariadb_install_utils
+
+- name: Create backup folder
+  file:
+    path: "{{ mariadb_backup_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0640
+  when: mariadb_install_utils
+
+- name: Setup cron job to backup database
+  cron:
+    name: "DB Backup"
+    minute: "{{ mariadb_cron_db_backup.minute }}"
+    hour: "{{ mariadb_cron_db_backup.hour }}"
+    day: "{{ mariadb_cron_db_backup.day }}"
+    weekday: "{{ mariadb_cron_db_backup.weekday }}"
+    job: "{{ mariadb_utilities_dir }}/db-backup.sh"
+  when: mariadb_enable_backup and mariadb_install_utils
+
+- name: Setup cron job to execute database optimization
+  cron:
+    name: "DB Optimization"
+    minute: "{{ mariadb_cron_db_optimize.minute }}"
+    hour: "{{ mariadb_cron_db_optimize.hour }}"
+    day: "{{ mariadb_cron_db_optimize.day }}"
+    weekday: "{{ mariadb_cron_db_optimize.weekday }}"
+    job: "{{ mariadb_utilities_dir }}/db-optimize.sh"
+  when: mariadb_enable_optimization and mariadb_install_utils

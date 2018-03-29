@@ -1,0 +1,113 @@
+---
+# defaults file for mrmoneyc.mariadb
+mariadb_major_version: "10.3"
+
+mariadb_service_name: "mysql"
+mariadb_run_user: "mysql"
+mariadb_run_group: "mysql"
+mariadb_secure_installation: true
+mariadb_root_password: "passw0rd"
+
+mariadb_server_id: 1
+mariadb_is_master: true
+mariadb_is_prod: false
+
+mariadb_utilities_dir: /usr/local/bin
+mariadb_backup_dir: /var/backup/db/
+mariadb_install_from_upstream: true
+mariadb_mysql_python_from_pip: true
+
+mariadb_databases: []
+# delete [] and define databases
+# - { name: database1, collation: utf8_general_ci, encoding: utf8, replicate: 1 }
+# - { name: database2, collation: utf8_general_ci, encoding: utf8, replicate: 1 }
+
+mariadb_db_users: []
+# delete [] and define databases
+# - { name: user1, host: 127.0.0.1, password: pass01, priv: *.*:ALL }
+# - { name: user2, host: 192.168.0.1, password: pass02, priv: db.table:priv1,priv2 }
+# - { name: user3, host: %, password: pass03, priv: dbname.*:ALL }
+
+mariadb_install_utils: false
+mariadb_enable_backup: false
+mariadb_enable_optimization: false
+
+mariadb_cron_db_backup:
+  minute: "0"
+  hour: "4"
+  day: "*"
+  weekday: "*"
+
+mariadb_cron_db_optimize:
+  minute: "0"
+  hour: "3"
+  day: "*"
+  weekday: "0"
+
+mariadb_cfg_mysqld_port: 3306
+mariadb_cfg_mysqld_socket: /var/run/mysql/mysql.sock
+mariadb_cfg_mysqld_pid_file: /var/run/mysql/mysql.pid
+mariadb_cfg_mysqld_basedir: /usr
+mariadb_cfg_mysqld_datadir: /var/lib/mysql
+mariadb_cfg_mysqld_tmpdir: /tmp
+mariadb_cfg_mysqld_skip_external_locking: false
+mariadb_cfg_mysqld_bind_address: 0.0.0.0
+mariadb_cfg_mysqld_performance_schema: 1
+mariadb_cfg_mysqld_skip_name_resolve: true
+mariadb_cfg_mysqld_max_connections: 512
+mariadb_cfg_mysqld_connect_timeout: 5
+mariadb_cfg_mysqld_max_allowed_packet: 16M
+mariadb_cfg_mysqld_wait_timeout: 600
+mariadb_cfg_mysqld_thread_cache_size: 128
+mariadb_cfg_mysqld_bulk_insert_buffer_size: 16M
+mariadb_cfg_mysqld_default_storage_engine: InnoDB
+mariadb_cfg_mysqld_innodb_buffer_pool_instances: 1
+mariadb_cfg_mysqld_innodb_buffer_pool_size: 256M
+mariadb_cfg_mysqld_innodb_log_buffer_size: 8M
+mariadb_cfg_mysqld_innodb_file_format: Barracuda
+mariadb_cfg_mysqld_innodb_file_per_table: ON
+mariadb_cfg_mysqld_innodb_open_files: 400
+mariadb_cfg_mysqld_innodb_io_capacity: 400
+mariadb_cfg_mysqld_innodb_flush_method: O_DIRECT
+mariadb_cfg_mysqld_innodb_flush_log_at_trx_commit: 1
+mariadb_cfg_mysqld_innodb_log_file_size: 25M
+mariadb_cfg_mysqld_table_cache: 1000
+mariadb_cfg_mysqld_tmp_table_size: 50M
+mariadb_cfg_mysqld_max_heap_table_size: 50M
+mariadb_cfg_mysqld_query_cache_limit: 256K
+mariadb_cfg_mysqld_query_cache_type: 0
+mariadb_cfg_mysqld_query_cache_size: 0
+mariadb_cfg_mysqld_query_cache_min_res_unit: 2k
+mariadb_cfg_mysqld_join_buffer_size: 2M
+mariadb_cfg_mysqld_sort_buffer_size: 256K
+mariadb_cfg_mysqld_read_buffer_size: 128K
+mariadb_cfg_mysqld_read_rnd_buffer_size: 4M
+mariadb_cfg_mysqld_key_buffer_size: 500M
+mariadb_cfg_mysqld_general_log: OFF
+mariadb_cfg_mysqld_general_log_file: /var/log/mysql/mysqld-queries.log
+mariadb_cfg_mysqld_log: /var/log/mysql/mysqld.log
+mariadb_cfg_mysqld_slow_query_log: 1
+mariadb_cfg_mysqld_slow_query_log_file: /var/log/mysql/mysqld-slow-queries.log
+mariadb_cfg_mysqld_long_query_time: 5
+mariadb_cfg_mysqld_log_slow_admin_statements: 1
+mariadb_cfg_mysqld_log_queries_not_using_indexes: 1
+mariadb_cfg_mysqld_log_bin: mysql-bin
+mariadb_cfg_mysqld_log_error: /var/log/mysql/mysqld-error.log
+mariadb_cfg_mysqld_expire_logs_days: 10
+mariadb_cfg_mysqld_max_binlog_size: 100M
+mariadb_cfg_mysqld_log_slave_updates: 0
+mariadb_cfg_mysqld_sync_binlog: 1
+
+mariadb_cfg_mysqld_secure_file_priv: /var/lib/mysql-files
+mariadb_cfg_mysqld_sql_mode: NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
+
+mariadb_cfg_mysqld_safe_socket: /var/run/mysql/mysql.sock
+mariadb_cfg_mysqld_safe_nice: 0
+
+mariadb_cfg_mysqld_multi_mysqld: /usr/bin/mysqld_safe
+mariadb_cfg_mysqld_multi_mysqladmin: /usr/bin/mysqladmin
+mariadb_cfg_mysqld_multi_log: /var/log/mysqld_multi.log
+
+mariadb_cfg_mysqldump_quick: 1
+mariadb_cfg_mysqldump_quote_names: 1
+mariadb_cfg_mysqldump_max_allowed_packet: 16M
