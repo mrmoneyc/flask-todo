@@ -11,7 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo?c
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
 
-api = Api(app)
+api = Api(app, doc='/swagger/')
 db = SQLAlchemy(app)
 
 
