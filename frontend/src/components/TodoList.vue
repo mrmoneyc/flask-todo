@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class=hero-body>
+    <div class="hero-body">
       <div class="container">
         <div class="column is-6 is-offset-3">
           <div class="box has-text-left">
