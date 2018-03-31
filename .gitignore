@@ -3,6 +3,7 @@
 **/*.env
 **/*.remote-sync.json
 **/*.pyc
+**/*.log
 **/tags
 **/TAGS
 .zcache/
@@ -13,3 +14,4 @@
 node_modules/
 vendor/
 __pycache__/
+src/public
