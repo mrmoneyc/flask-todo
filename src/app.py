@@ -17,7 +17,6 @@ CORS(app)
 @app.route('/')
 @app.route('/<path:path>')
 def serve_static(path='index.html'):
-    print(path)
     return send_from_directory('public', path)
 
 
