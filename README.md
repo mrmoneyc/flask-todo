@@ -4,7 +4,7 @@ flask-todo
 Prerequisite
 ----------
 ```shell
-pip install -r src/requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 
@@ -18,7 +18,7 @@ GRANT ALL ON todo.* TO 'todo'@'%' IDENTIFIED BY 'todo';
 
 Open interactive Python shell and execute:
 ```python
-from src.app import db
+from backend.app import db
 db.create_all()
 ```
 
@@ -26,5 +26,5 @@ db.create_all()
 Usage
 ----------
 ```shell
-python src/app.py
+python backend/app.py
 ```

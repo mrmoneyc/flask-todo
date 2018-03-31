@@ -6,6 +6,7 @@
 **/*.log
 **/tags
 **/TAGS
+**/__pycache__/
 .zcache/
 .padawan/
 .phpcomplete_extended/
@@ -13,5 +14,4 @@
 .vagrant/
 node_modules/
 vendor/
-__pycache__/
-src/public
+backend/public
