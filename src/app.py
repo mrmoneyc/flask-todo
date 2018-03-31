@@ -1,15 +1,25 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, request
+import os
+from flask import Flask, request, send_from_directory
 from flask_restplus import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.sql import expression
 from marshmallow import Schema, fields, ValidationError
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="public")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://todo:todo@127.0.0.1:3306/todo?charset=utf8mb4'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 CORS(app)
+
+
+# == Serve Static File ==
+@app.route('/')
+@app.route('/<path:path>')
+def serve_static(path='index.html'):
+    print(path)
+    return send_from_directory('public', path)
+
 
 api = Api(app, doc='/swagger/')
 db = SQLAlchemy(app)
