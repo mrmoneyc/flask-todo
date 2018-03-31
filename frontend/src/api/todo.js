@@ -11,6 +11,25 @@ const getTodos = (cb) => {
     });
 };
 
+const createTodo = (content, cb) => {
+  const reqBody = { content };
+  const reqHeader = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  axios.post('http://localhost:5000/todo', reqBody, reqHeader)
+    .then((resp) => {
+      console.dir(resp.data);
+      cb(resp.data, null);
+    })
+    .catch((err) => {
+      cb(null, err.message);
+    });
+};
+
 export default {
   getTodos,
+  createTodo,
 };

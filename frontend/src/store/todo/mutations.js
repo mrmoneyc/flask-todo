@@ -9,6 +9,14 @@ export const mutations = {
     state.todos = [];
     state.error = '';
   },
+  [types.CREATE_TODO](state, { content, todoId, error }) {
+    state.todos.push({
+      id: todoId,
+      content,
+      is_done: false,
+    });
+    state.error = error;
+  },
 };
 
 export const state = {

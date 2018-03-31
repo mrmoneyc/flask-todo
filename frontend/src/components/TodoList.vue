@@ -3,6 +3,14 @@
     <div class="hero-body">
       <div class="container">
         <div class="column is-6 is-offset-3">
+          <div class="field has-text-right">
+            <button class="button is-primary" @click="actionGetTodos">
+              Get Todos
+            </button>
+            <button class="button is-danger" @click="actionClearTodos">
+              Clear Todos
+            </button>
+          </div>
           <div class="box has-text-left">
             <div
               v-for="todo in todos"
@@ -14,14 +22,19 @@
                 {{ todo.content }}
               </b-checkbox>
             </div>
-          </div>
-          <div class="field has-text-right">
-            <button class="button is-primary" @click="actionGetTodos">
-              Get Todos
-            </button>
-            <button class="button is-danger" @click="actionClearTodos">
-              Clear Todos
-            </button>
+            <div class="field has-addons">
+              <b-input class="is-expanded"
+                       placeholder="Add Todo..."
+                       size="is-small"
+                       v-model="newTodoContent"
+                       @keypress.native.enter="actionAddTodo">
+              </b-input>
+              <button class="button is-primary is-small"
+                      @click="actionAddTodo"
+                      v-if="newTodoContent">
+                <b-icon icon="check"></b-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -33,6 +46,11 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+  data() {
+    return {
+      newTodoContent: '',
+    };
+  },
   computed: {
     ...mapGetters({
       todos: 'todos',
@@ -43,7 +61,14 @@ export default {
     ...mapActions([
       'actionGetTodos',
       'actionClearTodos',
+      'actionCreateTodo',
     ]),
+    actionAddTodo() {
+      if (this.newTodoContent) {
+        this.actionCreateTodo(this.newTodoContent);
+        this.newTodoContent = '';
+      }
+    },
   },
   mounted() {
     this.actionGetTodos();

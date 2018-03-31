@@ -21,7 +21,14 @@ const actionClearTodos = ({ commit }) => {
   commit(types.CLEAR_TODO);
 };
 
+const actionCreateTodo = ({ commit }, content) => {
+  apiTodo.createTodo(content, (todoId, error) => {
+    commit(types.CREATE_TODO, { content, todoId, error });
+  });
+};
+
 export default {
   actionGetTodos,
   actionClearTodos,
+  actionCreateTodo,
 };
