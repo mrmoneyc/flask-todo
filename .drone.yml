@@ -36,6 +36,5 @@ pipeline:
     mount:
       - /drone/docker
       - ./frontend/node_modules
-    # Mount the cache volume, needs "Trusted"
     volumes:
       - /tmp/cache:/cache
