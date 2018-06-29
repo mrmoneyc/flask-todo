@@ -1,6 +1,6 @@
 workspace:
   base: /flask-todo
-  path: src/github.com/mrmoneyc/flask-todo
+  path: /drone/src/github.com/mrmoneyc/flask-todo
 
 pipeline:
   restore-cache:
@@ -29,6 +29,9 @@ pipeline:
     dockerfile: ./Dockerfile
     context: .
     storage_path: /drone/docker
+    environment:
+    # Makes sure that the docker volume cache survives this run
+      PLUGIN_STORAGE_PATH: /drone/src/github.com/mrmoneyc/flask-todo/docker_cache
     secrets: [ docker_username, docker_password ]
     docker:
       purge: false

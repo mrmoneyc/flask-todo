@@ -7,3 +7,4 @@ ansible/
 todo-frontend/
 .git/
 .vagrant/
+docker_cache/
