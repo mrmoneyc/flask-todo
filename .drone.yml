@@ -23,13 +23,15 @@ pipeline:
 
   build-publish-image:
     image: plugins/docker
-    storage_path: /drone/docker
-    secrets: [ docker_username, docker_password ]
     repo: mrmoneyc/flask-todo
     tag:
       - build-from-ci
     dockerfile: ./Dockerfile
     context: .
+    storage_path: /drone/docker
+    secrets: [ docker_username, docker_password ]
+    docker:
+      purge: false
   rebuild-cache:
     image: drillster/drone-volume-cache
     rebuild: true
