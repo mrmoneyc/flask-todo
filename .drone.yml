@@ -9,6 +9,7 @@ pipeline:
     ttl: 7
     mount:
       - /drone/docker
+      - docker_cache
       - ./frontend/node_modules
     # Mount the cache volume, needs "Trusted"
     volumes:
@@ -23,23 +24,26 @@ pipeline:
 
   build-publish-image:
     image: plugins/docker
+    compress: true
+    docker:
+      purge: false
+    storage_path: /drone/src/github.com/mrmoneyc/flask-todo/docker_cache
+    environment:
+    # Makes sure that the docker volume cache survives this run
+      PLUGIN_STORAGE_PATH: /drone/src/github.com/mrmoneyc/flask-todo/docker_cache
+    secrets: [ docker_username, docker_password ]
     repo: mrmoneyc/flask-todo
     tag:
       - build-from-ci
     dockerfile: ./Dockerfile
     context: .
-    storage_path: /drone/docker
-    environment:
-    # Makes sure that the docker volume cache survives this run
-      PLUGIN_STORAGE_PATH: /drone/src/github.com/mrmoneyc/flask-todo/docker_cache
-    secrets: [ docker_username, docker_password ]
-    docker:
-      purge: false
+
   rebuild-cache:
     image: drillster/drone-volume-cache
     rebuild: true
     mount:
       - /drone/docker
+      - docker_cache
       - ./frontend/node_modules
     volumes:
       - /tmp/cache:/cache
