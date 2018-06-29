@@ -1,0 +1,21 @@
+workspace:
+  base: /flask-todo
+  path: src/github.com/mrmoneyc/flask-todo
+
+pipeline:
+  frontend:
+    image: node:9
+    commands:
+      - cd frontend
+      - yarn
+      - yarn run build
+  build-publish-image:
+    image: plugins/docker
+    username: ${DOCKER_USERNAME}
+    password: ${DOCKER_PASSWORD}
+    email: ${DOCKER_EMAIL}
+    repo: mrmoneyc/flask-todo
+    tag:
+      - build-from-ci
+    dockerfile: ./Dockerfile
+    context: .
