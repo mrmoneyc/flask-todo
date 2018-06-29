@@ -11,9 +11,7 @@ pipeline:
       - yarn run build
   build-publish-image:
     image: plugins/docker
-    username: ${DOCKER_USERNAME}
-    password: ${DOCKER_PASSWORD}
-    email: ${DOCKER_EMAIL}
+    secrets: [ docker_username, docker_password ]
     repo: mrmoneyc/flask-todo
     tag:
       - build-from-ci
