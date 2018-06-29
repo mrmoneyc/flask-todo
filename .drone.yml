@@ -3,17 +3,39 @@ workspace:
   path: src/github.com/mrmoneyc/flask-todo
 
 pipeline:
+  restore-cache:
+    image: drillster/drone-volume-cache
+    restore: true
+    ttl: 7
+    mount:
+      - /drone/docker
+      - ./frontend/node_modules
+    # Mount the cache volume, needs "Trusted"
+    volumes:
+      - /tmp/cache:/cache
+
   frontend:
     image: node:9
     commands:
       - cd frontend
       - yarn
       - yarn run build
+
   build-publish-image:
     image: plugins/docker
+    storage_path: /drone/docker
     secrets: [ docker_username, docker_password ]
     repo: mrmoneyc/flask-todo
     tag:
       - build-from-ci
     dockerfile: ./Dockerfile
     context: .
+  rebuild-cache:
+    image: drillster/drone-volume-cache
+    rebuild: true
+    mount:
+      - /drone/docker
+      - ./frontend/node_modules
+    # Mount the cache volume, needs "Trusted"
+    volumes:
+      - /tmp/cache:/cache
